@@ -70,7 +70,90 @@ struct node{
 	struct node *left;
 	struct node *right;
 };
-
+int is_BST(struct node*root)
+{
+	if (root == NULL)
+		return NULL;
+	struct node*temp = NULL;
+	if (root)
+	{
+		if (is_BST(root->left)!=1)
+		{
+			return 0;
+		}
+		if (temp != NULL&&root->data <= temp->data)
+			return 0;
+		temp = root;
+		return is_BST(root->right);
+	}
+	return 1;
+}
+int nodeCountDLL(struct node_dll*head)
+{
+	struct node_dll *temp = head;
+	int count = 0;
+	while (temp != NULL)
+	{
+		count++;
+		temp = temp -> next;
+	}
+	return count;
+}
+int nodeCountBST(struct node*root)
+{
+	struct node*temp = root;
+	int c1 = 0, c2 = 0;
+	if (root == NULL)
+		return 0;
+	else
+	{
+		c1 = nodeCountBST(root->left);
+		c2 = nodeCountBST(root->right);
+		return 1+(c1 + c2);
+	}
+}
+int node_sum_DLL(struct node_dll*head)
+{
+	struct node_dll*temp = head;
+	int sum = 0;
+	while (temp != NULL)
+	{
+		sum = sum + temp->data;
+		temp = temp->next;
+	}
+	return sum;
+}
+int node_sum_BST(struct node*root)
+{
+	int sum = 0, leftsum, rightsum;
+	if (root == NULL)
+	{
+		sum = 0;
+		return sum;
+	}
+	else
+	{
+		leftsum = node_sum_BST(root->left);
+		rightsum = node_sum_BST(root->right);
+		sum = root->data + leftsum + rightsum;
+		return sum;
+	}
+}
 int is_identical(struct node_dll *head, struct node *root){
+	struct node_dll*dlltemp = head;
+	int dll_count = (nodeCountDLL(head));
+	int bst_count = (nodeCountBST(root));
+	int dll_sum = (node_sum_DLL(head));
+	int bst_sum = (node_sum_BST(root));
+	if (head==NULL||root==NULL)
 	return -1;
+	if (is_BST(root)==1)
+	{
+		if ((dll_count == bst_count) && (dll_sum == bst_sum))
+			return 1;
+		else
+			return 0;
+	}
+	else
+		return 0;
 }
