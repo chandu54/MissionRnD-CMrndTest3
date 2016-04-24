@@ -66,10 +66,12 @@ int isOperator(char *data){
 	int i = 0;
 	if (data[i] == '+')
 	return 1;
-	if (data[i] == '-')
+	else if (data[i] == '-')
 		return 2;
-	if (data[i] == '*')
+	else if (data[i] == '*')
 		return 3;
+	else
+		return 0;
 }
 int isOperand(char *data){
      int i = 0;
@@ -79,9 +81,9 @@ int isOperand(char *data){
 int getOperand(char *data){
 	//converts data string to an integer "123" => 123
 	int digit=0,i=0;
-	while (data[i] != NULL)
+	while (data[i] != '\0')
 	{
-		digit = digit * 10 + (data[i] - '0');
+		digit =( digit * 10 )+ (data[i] - '0');
 		i++;
 	}
 	return digit;
@@ -90,18 +92,16 @@ int getOperand(char *data){
 int solve_tree(struct enode *root){
 	if (root==NULL)
     return -1;
-		if (isOperator(root->data))
+		if (isOperator(root->data)!=0)
 		{
 			if (isOperator(root->data) == 1)
-				return solve_tree(root->left) + solve_tree(root->right);
+				return (solve_tree(root->left) + solve_tree(root->right));
 			if (isOperand(root->data) == 2)
-				return solve_tree(root->left) - solve_tree(root->right);
+				return (solve_tree(root->left) - solve_tree(root->right));
 			if (isOperator(root->data) == 3)
-				return solve_tree(root->left) *solve_tree(root->right);
+				return (solve_tree(root->left) *solve_tree(root->right));
 		}
 		if (isOperand(root->data)==1)
-		{
-			return getOperand(root->data);
-		}
+			return (getOperand(root->data));
 }
 
